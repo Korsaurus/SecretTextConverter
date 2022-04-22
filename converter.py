@@ -7,33 +7,16 @@ class Converter:
         self.alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
                          't', 'u', 'v', 'w', 'x', 'y', 'z']
         self.numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
-        self.symbols = [".", ",", ":", "?", "'", "-", "/", "(", ")", '"', "!", "@", "=", "&", ";", "+", "_", "$"]
         self.morse_alphabet = {
-            "letters": [".-", "-...", "-.-.", '-..', '.', "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--",
-                        "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."],
-            "numbers": [".----", "..---", "...--", "....-", ".....", "-....", "--...", "---..", "----.", "-----"],
-            "symbols": {
-                ".": ".-.-.-",
-                ",": "--..--",
-                ":": "---...",
-                "?": "..--..",
-                "'": ".----.",
-                "-": "-....-",
-                "/": "-..-.",
-                ")": "-.--.-",
-                "(": "-.--.",
-                '"': ".-..-.",
-                "!": "-.-.--",
-                "@": ".--.-.",
-                "=": "-...-",
-                "&": ".-...",
-                ";": "-.-.-.",
-                "+": ".-.-.",
-                "_": "..--.-",
-                "$": "...-..-"
+                "a": ".-", "b": "-...", "c": "-.-.", "d": '-..', "e": '.', "f": "..-.", "g": "--.", "h": "....",
+                "i": "..", "j": ".---", "k": "-.-", "l": ".-..", "m": "--", "n": "-.", "o": "---", "p": ".--.",
+                "q": "--.-", "r": ".-.", "s": "...", "t": "-", "u": "..-", "v": "...-", "w": ".--", "x": "-..-",
+                "y": "-.--", "z": "--..", "1": ".----", "2": "..---", "3": "...--", "4": "....-", "5": ".....",
+                "6": "-....", "7": "--...", "8": "---..", "9": "----.", "0": "-----", ".": ".-.-.-", ",": "--..--",
+                ":": "---...", "?": "..--..", "'": ".----.", "-": "-....-", "/": "-..-.", ")": "-.--.-", "(": "-.--.",
+                '"': ".-..-.", "!": "-.-.--", "@": ".--.-.", "=": "-...-", "&": ".-...", ";": "-.-.-.", "+": ".-.-.",
+                "_": "..--.-", "$": "...-..- "
             }
-        }
-
 
     # MORSE SECTION
 
@@ -45,23 +28,9 @@ class Converter:
                 new_message += "    "
 
             #   The rules for international morse code are that words are separated by 7 spaces and letters by 3,
-            #   Since 3 spaces are added after every letter, and it's way too verbose to add a condition to each
-            #   if to check whether the next character is a space and to then not add the 3 spaces and instead add 7,
-            #   I decided to just add 4 if there's a space.
 
-            if char in self.alphabet:
-                letter_idx = self.alphabet.index(char)
-                morse_letter = self.morse_alphabet["letters"][letter_idx]
-                new_message += morse_letter
-                new_message += "   "
-            if char in self.numbers:
-                num_idx = self.numbers.index(char)
-                morse_num = self.morse_alphabet["numbers"][num_idx]
-                new_message += morse_num
-                new_message += "   "
-            if char in self.symbols:
-                morse_sym = self.morse_alphabet["symbols"][char]
-                new_message += morse_sym
+            if char != " ":
+                new_message += self.morse_alphabet[char]
                 new_message += "   "
         return new_message
 
@@ -95,20 +64,11 @@ class Converter:
         new_message = ""
         formatted_code = self.format_morse(code)
         print(formatted_code)
-        for item in formatted_code:
 
-            if item in self.morse_alphabet["letters"]:
-                item_idx = self.morse_alphabet["letters"].index(item)
-                letter = self.alphabet[item_idx]
-                new_message += letter
-            if item in self.morse_alphabet["numbers"]:
-                item_idx = self.morse_alphabet["numbers"].index(item)
-                number = self.numbers[item_idx]
-                new_message += number
-            if item in self.morse_alphabet["symbols"].values():
-                for key, value in self.morse_alphabet["symbols"].items():
-                    if item == value:
-                        new_message += key
+        for item in formatted_code:
+            for key, value in self.morse_alphabet.items():
+                if item == value:
+                    new_message += key
             if item == "|":
                 new_message += " "
 
@@ -117,11 +77,11 @@ class Converter:
     # END OF MORSE SECTION
 
     @staticmethod
-    def convert(text: str, cipher: Callable) -> str:
+    def encode(text: str, cipher: Callable) -> str:
         converted_text = cipher(text)
         return converted_text
 
     @staticmethod
-    def convert_from(code: str, decoder):
+    def decode(code: str, decoder):
         converted_text = decoder(code)
         return converted_text

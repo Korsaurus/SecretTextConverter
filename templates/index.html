@@ -1,0 +1,12 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}EC/DC{% endblock %}
+
+{% block content %}
+  <h2>Hello, Bootstrap</h2>
+<div class="content">
+    <h1 class="heading">Add a Movie</h1>
+    <!--  Create a form with the parameters/data of the edit form passed into the main function ie.
+The form object that form is equal to -->
+    {{ wtf.quick_form(form, novalidate=True) }}
+</div>
+{% endblock %}
